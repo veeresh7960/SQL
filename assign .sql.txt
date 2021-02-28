@@ -1,0 +1,207 @@
+Microsoft Windows [Version 6.3.9600]
+(c) 2013 Microsoft Corporation. All rights reserved.
+
+C:\Users\User>mysql -u root -p
+Enter password: ****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 8
+Server version: 8.0.23 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2021, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> create database employe2;
+Query OK, 1 row affected (0.11 sec)
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| employe2           |
+| employe_data       |
+| employes_data      |
+| information_schema |
+| it_employe         |
+| matromony          |
+| mysql              |
+| performance_schema |
+| sakila             |
+| students           |
+| sys                |
+| trv11              |
+| world              |
+| xworkz             |
++--------------------+
+14 rows in set (0.00 sec)
+
+mysql> use employe2
+Database changed
+mysql> create table dept;
+ERROR 4028 (HY000): A table must have at least one visible column.
+mysql> create table dept(
+    -> deptno int not null,
+    -> dname varchar(50) not null,
+    -> location varchar(50) not null);
+Query OK, 0 rows affected (0.71 sec)
+
+mysql> desc dept;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| deptno   | int         | NO   |     | NULL    |       |
+| dname    | varchar(50) | NO   |     | NULL    |       |
+| location | varchar(50) | NO   |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> create table emp(
+    -> empno int not null primary key,
+    -> ename varchar(50) not null,
+    -> job varchar(50) not null,
+    -> mgr int,
+    -> hiredate date,
+    -> sal decimal(10,2),
+    -> comm decimal(10,2),
+    -> deptno int not null,
+    -> foreign key(deptno) references dept(deptno));
+ERROR 1822 (HY000): Failed to add the foreign key constraint. Missing index for
+constraint 'emp_ibfk_1' in the referenced table 'dept'
+mysql> alter table dept modify column deptno int not null primary key;
+Query OK, 0 rows affected (1.97 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc dept;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| deptno   | int         | NO   | PRI | NULL    |       |
+| dname    | varchar(50) | NO   |     | NULL    |       |
+| location | varchar(50) | NO   |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> create table emp(
+    -> empno int not null primary key,
+    -> ename varchar(50) not null,
+    -> job varchar(50) not null,
+    -> mgr int,
+    -> hiredate date,
+    -> sal decimal(10,2),
+    -> comm decimal(10,2),
+    -> deptno int not null,
+    -> foreign key(deptno) references dept(deptno));
+Query OK, 0 rows affected (0.64 sec)
+
+mysql> desc emp;
++----------+---------------+------+-----+---------+-------+
+| Field    | Type          | Null | Key | Default | Extra |
++----------+---------------+------+-----+---------+-------+
+| empno    | int           | NO   | PRI | NULL    |       |
+| ename    | varchar(50)   | NO   |     | NULL    |       |
+| job      | varchar(50)   | NO   |     | NULL    |       |
+| mgr      | int           | YES  |     | NULL    |       |
+| hiredate | date          | YES  |     | NULL    |       |
+| sal      | decimal(10,2) | YES  |     | NULL    |       |
+| comm     | decimal(10,2) | YES  |     | NULL    |       |
+| deptno   | int           | NO   | MUL | NULL    |       |
++----------+---------------+------+-----+---------+-------+
+8 rows in set (0.05 sec)
+
+mysql> insert into dept values (10,'accounting','New york'),
+    -> (20,'Research','dallas'),
+    -> (30,'sales','chikago'),
+    -> (40,'operation','Boston'),
+    -> (50,'Production','India'),
+    -> (60,'Marketing','Banglore'),
+    -> (70,'finance','mumbai');
+Query OK, 7 rows affected (0.16 sec)
+Records: 7  Duplicates: 0  Warnings: 0
+
+mysql> select * from dept;
++--------+------------+----------+
+| deptno | dname      | location |
++--------+------------+----------+
+|     10 | accounting | New york |
+|     20 | Research   | dallas   |
+|     30 | sales      | chikago  |
+|     40 | operation  | Boston   |
+|     50 | Production | India    |
+|     60 | Marketing  | Banglore |
+|     70 | finance    | mumbai   |
++--------+------------+----------+
+7 rows in set (0.00 sec)
+
+mysql> insert into emp values (7000,'John','manager',7698,'2020-06-
+    '>
+    '> 18',2500.00,NULL,50),
+    -> (7002,'Sham','manager',7698,'2020-06-18',2500.00,NULL,50),
+    -> (7004,'Ravi','Clerck',7782,'2000-12-12',500.00,NULL,50),
+    -> (7369,'Smith','Clerk',7902,'1993-06-13',800.00,0.00,20),
+    -> (7499,'Allen','SalesMan',7698,'1998-08-15',1600.00,300.00,30),
+    -> (7521,'Ward','Salesman',7698,'1996-03-26',1250.00,500.00,30),
+    -> (7566,'Jones','manager',7839,'1995-10-31',2975.00,NULL,20),
+    -> (7654,'Martin','Salesman',7698,'1998-12-05',1250.00,1400.00,30),
+    -> (7698,'Blake','manager',7839,'1992-06-11',2850.00,NULL,30),
+    -> (7782,'Clark','manager',7839,'1993-05-14',2450.00,NULL,10),
+    -> (7788,'Scott','Analyst',7566,'1996-03-04',3000.00,NULL,20),
+    -> (7839,'King','President',NULL,'1990-06-09',5000.00,0.00,10),
+    -> (7844,'Turner','Salesman',7698,'1995-06-04',1500.00,0.00,30),
+    -> (7876,'Adams','Clerk',7788,'1999-06-04',1100.00,NULL,20),
+    -> (7900,'James','Clerk',7698,'2000-06-23',950.00,NULL,30),
+    -> (7902,'Ford','Aanalyst',7566,'1997-12-05',3000.00,NULL,20),
+    -> (7934,'Miller','Clerk',7782,'2000-01-21',1300.00,NULL,10);
+ERROR 1292 (22007): Incorrect date value: '2020-06-
+
+18' for column 'hiredate' at row 1
+mysql> insert into emp values (7000,'John','manager',7698,'2020-06-18',2500.00,N
+ULL,50),
+    -> (7002,'Sham','manager',7698,'2020-06-18',2500.00,NULL,50),
+    -> (7004,'Ravi','Clerck',7782,'2000-12-12',500.00,NULL,50),
+    -> (7369,'Smith','Clerk',7902,'1993-06-13',800.00,0.00,20),
+    -> (7499,'Allen','SalesMan',7698,'1998-08-15',1600.00,300.00,30),
+    -> (7521,'Ward','Salesman',7698,'1996-03-26',1250.00,500.00,30),
+    -> (7566,'Jones','manager',7839,'1995-10-31',2975.00,NULL,20),
+    -> (7654,'Martin','Salesman',7698,'1998-12-05',1250.00,1400.00,30),
+    -> (7698,'Blake','manager',7839,'1992-06-11',2850.00,NULL,30),
+    -> (7782,'Clark','manager',7839,'1993-05-14',2450.00,NULL,10),
+    -> (7788,'Scott','Analyst',7566,'1996-03-04',3000.00,NULL,20),
+    -> (7839,'King','President',NULL,'1990-06-09',5000.00,0.00,10),
+    -> (7844,'Turner','Salesman',7698,'1995-06-04',1500.00,0.00,30),
+    -> (7876,'Adams','Clerk',7788,'1999-06-04',1100.00,NULL,20),
+    -> (7900,'James','Clerk',7698,'2000-06-23',950.00,NULL,30),
+    -> (7902,'Ford','Aanalyst',7566,'1997-12-05',3000.00,NULL,20),
+    -> (7934,'Miller','Clerk',7782,'2000-01-21',1300.00,NULL,10);
+Query OK, 17 rows affected (0.21 sec)
+Records: 17  Duplicates: 0  Warnings: 0
+
+mysql> select * from emp;
++-------+--------+-----------+------+------------+---------+---------+--------+
+| empno | ename  | job       | mgr  | hiredate   | sal     | comm    | deptno |
++-------+--------+-----------+------+------------+---------+---------+--------+
+|  7000 | John   | manager   | 7698 | 2020-06-18 | 2500.00 |    NULL |     50 |
+|  7002 | Sham   | manager   | 7698 | 2020-06-18 | 2500.00 |    NULL |     50 |
+|  7004 | Ravi   | Clerck    | 7782 | 2000-12-12 |  500.00 |    NULL |     50 |
+|  7369 | Smith  | Clerk     | 7902 | 1993-06-13 |  800.00 |    0.00 |     20 |
+|  7499 | Allen  | SalesMan  | 7698 | 1998-08-15 | 1600.00 |  300.00 |     30 |
+|  7521 | Ward   | Salesman  | 7698 | 1996-03-26 | 1250.00 |  500.00 |     30 |
+|  7566 | Jones  | manager   | 7839 | 1995-10-31 | 2975.00 |    NULL |     20 |
+|  7654 | Martin | Salesman  | 7698 | 1998-12-05 | 1250.00 | 1400.00 |     30 |
+|  7698 | Blake  | manager   | 7839 | 1992-06-11 | 2850.00 |    NULL |     30 |
+|  7782 | Clark  | manager   | 7839 | 1993-05-14 | 2450.00 |    NULL |     10 |
+|  7788 | Scott  | Analyst   | 7566 | 1996-03-04 | 3000.00 |    NULL |     20 |
+|  7839 | King   | President | NULL | 1990-06-09 | 5000.00 |    0.00 |     10 |
+|  7844 | Turner | Salesman  | 7698 | 1995-06-04 | 1500.00 |    0.00 |     30 |
+|  7876 | Adams  | Clerk     | 7788 | 1999-06-04 | 1100.00 |    NULL |     20 |
+|  7900 | James  | Clerk     | 7698 | 2000-06-23 |  950.00 |    NULL |     30 |
+|  7902 | Ford   | Aanalyst  | 7566 | 1997-12-05 | 3000.00 |    NULL |     20 |
+|  7934 | Miller | Clerk     | 7782 | 2000-01-21 | 1300.00 |    NULL |     10 |
++-------+--------+-----------+------+------------+---------+---------+--------+
+17 rows in set (0.00 sec)
+
+mysql> ^C
+mysql>
